@@ -35,13 +35,12 @@ public class Real extends JFrame{
 		layeredPane = new JLayeredPane();
 		url = this.getClass().getResource("/bg_north.png");
 		url2=this.getClass().getResource("/bg_south.png");
-		url3=this.getClass().getResource("/default_profile.png");
-		url4=this.getClass().getResource("/null.png");
+		url3=this.getClass().getResource("/ryan1.png");
+		
 		try {
 			bg_north = ImageIO.read(url);
 			bg_south = ImageIO.read(url2);
-			profile= ImageIO.read(url4);
-			p_background=ImageIO.read(url3);
+			profile= ImageIO.read(url3);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -49,32 +48,21 @@ public class Real extends JFrame{
 		
 		north_img = new Canvas(){
 			public void paint(Graphics g) {
-				g.drawImage((Image)bg_north, 0, 0, 300, 280,this);
-			}
-		};
-		south_img = new Canvas(){
-			public void paint(Graphics g) {
-				g.drawImage((Image)bg_south, 0, 0, 300, 150,this);
-			}
-		};
-		
-		can_profile= new Canvas(){
-			public void paint(Graphics g) {
-				 int w = profile.getWidth();
-			       int h = profile.getHeight();
-			       
-			        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(0,0,50,50); 
+				   
+			       																		//잘라내는 원의 크기를 결정
+			        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(99,181,100,98); 
 			        Area circle = new Area(ellipse1);
-			     
+			        g.drawImage(bg_north, 0, 0, 300,250,this);
+			        
 
-			        Graphics2D g2 = (Graphics2D)g;
-			       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			       g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-			       g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+			        Graphics2D g2 =(Graphics2D) g;
+			        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			        g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+			        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 			        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			        g2.setClip(circle);
 			        
-			        g2.drawImage(p_background, 0, 0, null);
+			        g2.drawImage(profile, 100,180,100, 100, null);
 			        
 			        g2.setClip(null);
 			        Stroke s = new BasicStroke(2);
@@ -85,17 +73,50 @@ public class Real extends JFrame{
 			        
 			}
 		};
+		south_img = new Canvas(){
+			public void paint(Graphics g) {
+				g.drawImage((Image)bg_south, 0, 0, 300, 150,this);
+			}
+		};
+		
+/*		can_profile= new Canvas(){
+			public void paint(Graphics g) {
+				 int w = profile.getWidth();
+				 int h = profile.getHeight();
+		       
+		        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(0,0,50,50); 
+		        Area circle = new Area(ellipse1);
+		     
+
+		        Graphics2D g2 = (Graphics2D)g;
+		       g2.setRenderingHint (RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		       g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+		       g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		        g2.setClip(circle);
+		        
+		        g2.drawImage(p_background, 60, 50, null);
+		        
+		        g2.setClip(null);
+		        Stroke s = new BasicStroke(2);
+		        g2.setStroke(s);
+		        g2.setColor(Color.BLACK);
+		        g2.draw(circle);
+		        g2.dispose();
+		        
+			}
+		};*/
 		
 		
 		//                            x  y   width  height
-		north_img.setBounds(0, 0, 300, 300);
-		south_img.setBounds(0, 280, 300, 150);
+		north_img.setBounds(0, 0, 300, 450);
+		south_img.setBounds(0, 400, 300, 250);
 		
-		can_profile.setBounds(105, 200, 60, 60);
+		//can_profile.setBounds(105, 200, 60, 60);
 		
 		layeredPane.add(north_img, 1);
-		layeredPane.add(south_img, 2,1);
-		layeredPane.add(can_profile, 3,2);
+		//layeredPane.add(south_img, 1);
+		//layeredPane.add(can_profile, 3,2);
 		
 		
 		add(layeredPane);
