@@ -3,11 +3,17 @@ package Profile;
 import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
@@ -16,26 +22,28 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
-public class Real extends JFrame{
+public class Real extends JFrame implements ActionListener{
 	Canvas north_img,south_img,can_profile;
 	//ImageIcon profile;
-	JLabel status_msg,name;
+	JLabel status_msg,name,la_chat,la_manager,la_profile;
 	URL url,url2,url3,url4;
+	JPanel p_status;
 	BufferedImage bg_north,bg_south,profile,p_background;
 	JLayeredPane layeredPane;
-	
+	ImageIcon chat,manager;
+	RoundButton bt_chat,bt_manager;
 	
 	
 	public Real() {
 		layeredPane = new JLayeredPane();
 		url = this.getClass().getResource("/bg_north.png");	//상단배경
 		url2=this.getClass().getResource("/bg_south.png");	//하단
-		url3=this.getClass().getResource("/ryan1.png"); //프로필사진
+		url3=this.getClass().getResource("/duck1.png"); //프로필사진
 		
 		try {
 			bg_north = ImageIO.read(url);
@@ -46,15 +54,21 @@ public class Real extends JFrame{
 			e.printStackTrace();
 		}
 		
+		
 		north_img = new Canvas(){
 			public void paint(Graphics g) {
 				   
 		       																		//잘라내는 원의 크기를 결정
 		        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(99,181,100,98); 
 		        Area circle = new Area(ellipse1);
-		        g.drawImage(bg_north, 0, 0, 300,250,this);
 		        
-
+		        g.drawImage(bg_north, 0, 0, 300,250,this);  //백그라운드이미지
+		        
+		        g.setFont(new Font("돋움", Font.PLAIN, 25));
+		        g.setColor(Color.BLACK);
+		        g.drawString("상태메시지", 85, 100);						//상태메시지
+		        
+		        
 		        Graphics2D g2 =(Graphics2D) g;
 		        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		        g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
@@ -63,40 +77,99 @@ public class Real extends JFrame{
 		        g2.setClip(circle);
 		        
 		        g2.drawImage(profile, 100,180,100, 100, null);
-		        
+		        g2.setColor(Color.WHITE);
 		        g2.setClip(null);
 		        Stroke s = new BasicStroke(2);
 		        g2.setStroke(s);
 		        g2.setColor(Color.BLACK);
 		        g2.draw(circle);
 		        g2.dispose();
+		        
+		        
 			        
+			}
+			protected void paintComponent(Graphics g) {
+				Graphics2D g2 =(Graphics2D) g;
+				System.out.println("dddd");
 			}
 		};
 		south_img = new Canvas(){
 			public void paint(Graphics g) {
-				g.drawImage((Image)bg_south, 0, 0, 300, 150,this);
+				g.drawImage((Image)bg_south, 0, 0, 300, 300,this);
 			}
 		};
 		
+		
+		name = new JLabel("아이디명");
+		name.setForeground(Color.black);
+		
+		ImageIcon chat = new ImageIcon("C:/java_workspace2/ExKakaoProject/res/chat.png");
+		bt_chat = new RoundButton(chat);
+		
+		ImageIcon manager = new ImageIcon("C:/java_workspace2/ExKakaoProject/res/manager.png");
+		bt_manager = new RoundButton(manager);
+		
+		
+		la_chat = new JLabel("채팅하기");
+		la_chat.setForeground(Color.BLACK);
+		la_manager =new JLabel("수정하기");
+		la_manager.setForeground(Color.BLACK);
+		la_profile= new JLabel("dddddd");
+		la_profile.setForeground(Color.BLACK);
+		
+		
+		
 		//                            x  y   width  height
 		north_img.setBounds(0, 0, 300, 300);
-		south_img.setBounds(0, 250, 300, 165);
+		name.setBounds(115, 280, 70, 50);
+		bt_chat.setBounds(65, 340, 50, 50);
+		bt_manager.setBounds(165, 340, 50, 50);
+		la_chat.setBounds(65, 390, 70, 30);
+		la_manager.setBounds(165, 390, 70, 30);
 		
+				
 		
-		layeredPane.add(south_img, 2,1);
 		layeredPane.add(north_img, 1);
+		layeredPane.add(name, 2,1);
+		layeredPane.add(bt_chat, 3,2);
+		layeredPane.add(bt_manager, 4,3);
+		layeredPane.add(la_chat, 4,3);
+		layeredPane.add(la_manager, 4,3);
 		
 		
-		
+		north_img.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked(MouseEvent e) {
+				
+				Object obj =e.getPoint();
+				Point p = (Point)obj;
+				System.out.println(p.getX()+","+p.getY());
+				System.out.println("dd");
+			
+			}
+		});
+		bt_manager.addActionListener(this);
+		la_profile.addMouseListener(new MouseAdapter() {
+			
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("클릭");
+			
+			}
+		});
 		add(layeredPane);
 		
 		
-		setBackground(Color.black);
+		setBackground(Color.WHITE);
 		setSize(310, 460);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		
+	}
+	
+	
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("너되지?");
 		
 	}
 	public static void main(String[] args) {
