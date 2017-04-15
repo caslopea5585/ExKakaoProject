@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 public class Real extends JFrame implements ActionListener{
 	Canvas north_img,south_img,can_profile;
 	//ImageIcon profile;
-	JLabel status_msg,name,la_chat,la_manager,la_profile;
+	JLabel name,la_chat,la_manager,la_profile;
 	URL url,url2,url3,url4;
 	JPanel p_status;
 	BufferedImage bg_north,bg_south,profile,p_background;
@@ -38,6 +38,7 @@ public class Real extends JFrame implements ActionListener{
 	ImageIcon chat,manager;
 	RoundButton bt_chat,bt_manager;
 	Real real;
+	String status_msg;
 	
 	public Real() {
 		real = this;
@@ -46,6 +47,7 @@ public class Real extends JFrame implements ActionListener{
 		url2=this.getClass().getResource("/bg_south.png");	//하단
 		url3=this.getClass().getResource("/ryan1.png"); //프로필사진
 		
+		System.out.println("메인"+url3);
 		try {
 			bg_north = ImageIO.read(url);
 			bg_south = ImageIO.read(url2);
@@ -67,7 +69,8 @@ public class Real extends JFrame implements ActionListener{
 		        
 		        g.setFont(new Font("돋움", Font.PLAIN, 25));
 		        g.setColor(Color.BLACK);
-		        g.drawString("상태메시지", 85, 100);						//상태메시지
+		        status_msg="상태메시지";
+		        g.drawString(status_msg, 85, 100);						//상태메시지
 		        
 		        
 		        Graphics2D g2 =(Graphics2D) g;
@@ -160,6 +163,7 @@ public class Real extends JFrame implements ActionListener{
 			
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("클릭");
+				//EditProfile editProfile = new EditProfile(real);
 			
 			}
 		});

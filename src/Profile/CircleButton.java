@@ -38,6 +38,21 @@ public class CircleButton extends JButton{
 		
 		
 	}
+	
+	public CircleButton(ImageIcon icon){
+		super(icon);
+	    Dimension size = getPreferredSize();
+	    size.width = size.height = Math.max(size.width, size.height);
+	    setPreferredSize(size);
+	 
+	    /*
+	     This call causes the JButton not to paint the background.
+	     This allows us to paint a round background.
+	    */
+
+	    setContentAreaFilled(false);
+	    setBackground(new Color(0, 0, 255, 0));
+	}
 	protected void paintComponent(Graphics g) {
 	    if (getModel().isArmed()) {
 	      g.setColor(Color.RED);
