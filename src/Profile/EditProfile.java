@@ -3,9 +3,11 @@ package Profile;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -25,6 +27,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 public class EditProfile extends JDialog implements ActionListener{
 	Real real;
@@ -113,6 +116,7 @@ public class EditProfile extends JDialog implements ActionListener{
 					can.imageUpdate(profile, can.PROPERTIES, 0, 0, 100, 100);
 				}
 				can.repaint();
+				update(can.getGraphics());
 			}
 			
 		});
@@ -120,9 +124,10 @@ public class EditProfile extends JDialog implements ActionListener{
 		bt_cancle.addActionListener(this);
 		bt_ok.addActionListener(this);
 		
+		p_north.setBackground(Color.WHITE);
+		p_center.setBackground(Color.WHITE);
+		p_south.setBackground(Color.WHITE);
 		
-		
-		setBackground(Color.WHITE);
 		setVisible(true);
 		setLocationRelativeTo(real);
 		setSize(300,300);
@@ -133,6 +138,7 @@ public class EditProfile extends JDialog implements ActionListener{
 		System.out.println("Âï´Ï");
 		real.name.setText(name.getText());
 		real.status_msg=status_msg.getText();
+		
 	}
 	
 	
@@ -145,6 +151,7 @@ public class EditProfile extends JDialog implements ActionListener{
 			dataSet();
 			
 		}
+		dispose();
 		
 	}
 	
