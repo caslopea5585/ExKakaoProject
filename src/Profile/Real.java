@@ -37,13 +37,14 @@ public class Real extends JFrame implements ActionListener{
 	JLayeredPane layeredPane;
 	ImageIcon chat,manager;
 	RoundButton bt_chat,bt_manager;
-	
+	Real real;
 	
 	public Real() {
+		real = this;
 		layeredPane = new JLayeredPane();
 		url = this.getClass().getResource("/bg_north.png");	//상단배경
 		url2=this.getClass().getResource("/bg_south.png");	//하단
-		url3=this.getClass().getResource("/duck1.png"); //프로필사진
+		url3=this.getClass().getResource("/ryan1.png"); //프로필사진
 		
 		try {
 			bg_north = ImageIO.read(url);
@@ -85,8 +86,6 @@ public class Real extends JFrame implements ActionListener{
 		        g2.draw(circle);
 		        g2.dispose();
 		        
-		        
-			        
 			}
 			protected void paintComponent(Graphics g) {
 				Graphics2D g2 =(Graphics2D) g;
@@ -143,9 +142,17 @@ public class Real extends JFrame implements ActionListener{
 				
 				Object obj =e.getPoint();
 				Point p = (Point)obj;
+				//x의 범위 116~172 y의 ㅂ범위 201~163
+				int x= (int)p.getX();
+				int y =(int)p.getY();
 				System.out.println(p.getX()+","+p.getY());
-				System.out.println("dd");
-			
+				
+				if(x>116 && x<172 && y>200&& y<260){
+					System.out.println("이미지클릭");
+					ProfileImage profileImage = new ProfileImage(real);
+				}else{
+					System.out.println("노ㅓ작동");
+				}
 			}
 		});
 		bt_manager.addActionListener(this);
@@ -169,7 +176,10 @@ public class Real extends JFrame implements ActionListener{
 	
 	
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("너되지?");
+		Object obj = e.getSource();
+		if(obj==bt_manager){
+			EditProfile editProfile = new EditProfile(this);
+		}
 		
 	}
 	public static void main(String[] args) {
