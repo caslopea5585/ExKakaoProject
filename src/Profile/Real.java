@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
@@ -17,17 +18,22 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class Real extends JFrame implements ActionListener{
+public class Real extends JFrame implements ActionListener,Runnable{
 	Canvas north_img,south_img,can_profile;
 	//ImageIcon profile;
 	JLabel name,la_chat,la_manager,la_profile;
@@ -36,9 +42,11 @@ public class Real extends JFrame implements ActionListener{
 	BufferedImage bg_north,bg_south,profile,p_background;
 	JLayeredPane layeredPane;
 	ImageIcon chat,manager;
-	RoundButton bt_chat,bt_manager;
+	RoundButton bt_chat,bt_manager,bt_back_profile;
 	Real real;
 	String status_msg;
+	JFileChooser chooser;
+	Thread thread;
 	
 	public Real() {
 		real = this;
@@ -111,6 +119,13 @@ public class Real extends JFrame implements ActionListener{
 		ImageIcon manager = new ImageIcon("C:/java_workspace2/ExKakaoProject/res/manager.png");
 		bt_manager = new RoundButton(manager);
 		
+		ImageIcon back_profile = new ImageIcon("C:/java_workspace2/ExKakaoProject/res/back_select.png");
+		bt_back_profile = new RoundButton(back_profile);
+		
+		chooser= new JFileChooser("C:/java_workspace2/ExKakaoProject/res");
+		thread = new Thread(this);
+		thread.start();
+		
 		
 		la_chat = new JLabel("채팅하기");
 		la_chat.setForeground(Color.BLACK);
@@ -121,6 +136,7 @@ public class Real extends JFrame implements ActionListener{
 		
 		
 		
+
 		//                            x  y   width  height
 		north_img.setBounds(0, 0, 300, 300);
 		name.setBounds(115, 280, 70, 50);
@@ -128,7 +144,7 @@ public class Real extends JFrame implements ActionListener{
 		bt_manager.setBounds(165, 340, 50, 50);
 		la_chat.setBounds(65, 390, 70, 30);
 		la_manager.setBounds(165, 390, 70, 30);
-		
+		bt_back_profile.setBounds(245, 250, 45, 45);
 				
 		
 		layeredPane.add(north_img, 1);
@@ -137,6 +153,7 @@ public class Real extends JFrame implements ActionListener{
 		layeredPane.add(bt_manager, 4,3);
 		layeredPane.add(la_chat, 4,3);
 		layeredPane.add(la_manager, 4,3);
+		layeredPane.add(bt_back_profile, 4,3);
 		
 		
 		north_img.addMouseListener(new MouseAdapter() {
@@ -158,6 +175,8 @@ public class Real extends JFrame implements ActionListener{
 				}
 			}
 		});
+		
+		
 		bt_manager.addActionListener(this);
 		la_profile.addMouseListener(new MouseAdapter() {
 			
@@ -167,7 +186,11 @@ public class Real extends JFrame implements ActionListener{
 			
 			}
 		});
+		bt_back_profile.addActionListener(this);
+		
+		
 		add(layeredPane);
+		
 		
 		
 		setBackground(Color.WHITE);
@@ -183,9 +206,28 @@ public class Real extends JFrame implements ActionListener{
 		Object obj = e.getSource();
 		if(obj==bt_manager){
 			EditProfile editProfile = new EditProfile(this);
+		}else if(obj==bt_back_profile){
+			int result = chooser.showOpenDialog(this);
+			if(result == JFileChooser.APPROVE_OPTION){
+				File file = chooser.getSelectedFile();
+				url=this.getClass().getResource("/"+file.getName()+""); //프로필사진
+				
+				north_img.repaint();
+			}
 		}
 		
 	}
+	
+	
+	public void run() {
+		while(true){
+			north_img.repaint();
+			south_img.repaint();
+			north_img.update(g);
+		}
+		
+	}
+	
 	public static void main(String[] args) {
 		new Real();
 	}
