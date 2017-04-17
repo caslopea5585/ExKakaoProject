@@ -124,6 +124,8 @@ public class Profile extends JFrame implements ActionListener{
 		ImageIcon back_profile = new ImageIcon(this.getClass().getResource("/back_profile.png"));
 		bt_back_profile = new RoundButton(back_profile);
 		
+		
+		
 		chooser= new JFileChooser("C:/java_workspace2/ExKakaoProject/res");
 	
 		la_chat = new JLabel("채팅하기");
@@ -134,7 +136,7 @@ public class Profile extends JFrame implements ActionListener{
 		la_manager.setForeground(Color.BLACK);
 		
 		
-
+		
 		//                            x  y   width  height
 		can_north_img.setBounds(0, 0, 300, 300);
 		la_name.setBounds(115, 280, 70, 50);
