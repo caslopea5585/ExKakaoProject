@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public class EditProfile extends JDialog implements ActionListener{
-	Real real;
+	Profile Profile;
 	JPanel p_north, p_center, p_south;
 	ImageIcon icon;
 	BufferedImage profile;
@@ -42,29 +42,25 @@ public class EditProfile extends JDialog implements ActionListener{
 	JFileChooser chooser;
 
 	
-	public EditProfile(Real real) {
-		this.real = real;
-		this.url = real.url3;
-
-		
+	public EditProfile(Profile Profile) {
+		this.Profile = Profile;
+		this.url = Profile.url_profileImage;
 		p_north = new JPanel();
 		p_center = new JPanel();
 		p_south = new JPanel();
-		
-
 		
 		can = new Canvas(){
 			public void paint(Graphics g) {
 		        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(99,181,100,98); 
 		        Area circle = new Area(ellipse1);
 				try {
-					profile = ImageIO.read(real.url3);
+					profile = ImageIO.read(Profile.url_profileImage);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 		        g.drawImage(profile, 0, 0, 100,100,this);  //백그라운드이미지
-		        real.north_img.repaint();
+		        Profile.can_north_img.repaint();
 		        g.setFont(new Font("돋움", Font.BOLD, 15));
 		        g.setColor(Color.BLACK);
 		       
@@ -73,8 +69,8 @@ public class EditProfile extends JDialog implements ActionListener{
 			}
 		};
 		
-		name = new JTextField(real.name.getText());
-		status_msg = new JTextArea(real.status_msg);
+		name = new JTextField(Profile.la_name.getText());
+		status_msg = new JTextArea(Profile.status_msg);
 		System.out.println();
 		
 		
@@ -112,8 +108,7 @@ public class EditProfile extends JDialog implements ActionListener{
 				if(result == JFileChooser.APPROVE_OPTION){
 					File file = chooser.getSelectedFile();
 					url=this.getClass().getResource("/"+file.getName()+""); //프로필사진
-					real.url3=this.getClass().getResource("/"+file.getName()+""); //프로필사진
-					real.north_img.repaint();
+					Profile.url_profileImage=this.getClass().getResource("/"+file.getName()+""); //프로필사진
 					can.repaint();
 					can.imageUpdate(profile, can.PROPERTIES, 0, 0, 100, 100);
 				}
@@ -124,26 +119,19 @@ public class EditProfile extends JDialog implements ActionListener{
 		});
 		bt_cancle.addActionListener(this);
 		bt_ok.addActionListener(this);
-
-		
-			
 		p_north.setBackground(Color.WHITE);
 		p_center.setBackground(Color.WHITE);
 		p_south.setBackground(Color.WHITE);
-
-		
 		setVisible(true);
-		setLocationRelativeTo(real);
+		setLocationRelativeTo(Profile);
 		setSize(300,300);
 		
 		
 	}
 	public void dataSet(){
-		System.out.println("찍니");
-		real.name.setText(name.getText());
-		real.status_msg=status_msg.getText();
-		real.north_img.repaint();
-		
+		Profile.la_name.setText(name.getText());
+		Profile.status_msg=status_msg.getText();
+		Profile.can_north_img.repaint();
 	}
 	
 	
@@ -159,7 +147,5 @@ public class EditProfile extends JDialog implements ActionListener{
 		dispose();
 		
 	}
-	
-
 	
 }

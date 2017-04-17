@@ -22,17 +22,7 @@ public class RoundButton extends JButton {
 		
 	}
 	protected void paintComponent(Graphics g) {
-		/*
-		if (getModel().isArmed()) {
-			System.out.println("나눌렀어?");
-			g.setColor(new Color(233, 233, 233));
-		} else {
-			g.setColor(new Color(233, 233, 233));
-		}
-		*/
-		
-		//g.fillOval(0, 0, getSize().width - 1, getSize().height - 1);
-		
+
 		super.paintComponent(g);
 	}
 	  protected void paintBorder(Graphics g) {
@@ -40,11 +30,11 @@ public class RoundButton extends JButton {
 		    g.drawOval(0, 0, getSize().width - 1, getSize().height - 1);
 		 }
 
-	// Hit detection.
+
 	Shape shape;
 	
 	public boolean contains(int x, int y) {
-		// If the button has changed size,  make a new shape object.
+		//원을 만들고 그 크기를 정하는 부분.
 		if (shape == null || !shape.getBounds().equals(getBounds())) {
 			shape = new Ellipse2D.Float(0, 0, getWidth(), getHeight());
 			

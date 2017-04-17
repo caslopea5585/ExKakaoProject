@@ -33,45 +33,40 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class Real extends JFrame implements ActionListener,Runnable{
-	Canvas north_img,south_img,can_profile;
-	//ImageIcon profile;
-	JLabel name,la_chat,la_manager,la_profile;
-	URL url,url2,url3,url4;
+public class Profile extends JFrame implements ActionListener{
+	Profile profile;
+	Canvas can_north_img,can_south_img,can_profile;
+	JLabel la_name,la_chat,la_manager;
+	URL url_profileBackground,url_profileSouth,url_profileImage;
 	JPanel p_status;
-	BufferedImage bg_north,bg_south,profile,p_background;
+	BufferedImage buffr_north,buffr_south,buffr_profile;
 	JLayeredPane layeredPane;
 	ImageIcon chat,manager;
 	RoundButton bt_chat,bt_manager,bt_back_profile;
-	Real real;
 	String status_msg="상태메시지";
 	JFileChooser chooser;
-	Thread thread;
 	
-	public Real() {
-		real = this;
+	public Profile() {
+		profile = this;
 		layeredPane = new JLayeredPane();
-		url = this.getClass().getResource("/bg_north.png");	//상단배경
-		url2=this.getClass().getResource("/bg_south.png");	//하단
-		url3=this.getClass().getResource("/ryan1.png"); //프로필사진
+		url_profileBackground = this.getClass().getResource("/bg_north.png");	//상단배경
+		url_profileSouth=this.getClass().getResource("/bg_south.png");	//하단
+		url_profileImage=this.getClass().getResource("/ryan1.png"); //프로필사진
 		
-		System.out.println("메인"+url3);
 		try {
-		
-			bg_south = ImageIO.read(url2);
-			
+			buffr_south = ImageIO.read(url_profileSouth);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		
-		north_img = new Canvas(){
+		can_north_img = new Canvas(){
 			public void paint(Graphics g) {
 				   
 				try {
-					bg_north = ImageIO.read(url);
-					profile= ImageIO.read(url3);
+					buffr_north = ImageIO.read(url_profileBackground);
+					buffr_profile= ImageIO.read(url_profileImage);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}		
@@ -79,7 +74,7 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(99,181,100,98); 
 		        Area circle = new Area(ellipse1);
 		        
-		        g.drawImage(bg_north, 0, 0, 300,250,this);  //백그라운드이미지
+		        g.drawImage(buffr_north, 0, 0, 300,250,this);  //백그라운드이미지
 		        
 		        g.setFont(new Font("돋움", Font.PLAIN, 25));
 		        g.setColor(Color.BLACK);
@@ -94,7 +89,7 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		        g2.setClip(circle);
 		        
-		        g2.drawImage(profile, 100,180,100, 100, null);
+		        g2.drawImage(buffr_profile, 100,180,100, 100, null);
 		        g2.setColor(Color.WHITE);
 		        g2.setClip(null);
 		        Stroke s = new BasicStroke(2);
@@ -104,54 +99,45 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		        g2.dispose();
 		        
 			}
-			protected void paintComponent(Graphics g) {
-				Graphics2D g2 =(Graphics2D) g;
-				System.out.println("dddd");
-			}
-			
-			public void update(Graphics g) {
-				
-				super.update(g);
-			}
+
 			
 		};
-		south_img = new Canvas(){
+		can_south_img = new Canvas(){
 			public void paint(Graphics g) {
-				g.drawImage((Image)bg_south, 0, 0, 300, 300,this);
+				g.drawImage((Image)buffr_south, 0, 0, 300, 300,this);
 			}
 		};
 		
 		
-		name = new JLabel("아이디명");
-		name.setForeground(Color.black);
+		la_name = new JLabel("아이디명");
+		la_name.setForeground(Color.black);
 		
-		ImageIcon chat = new ImageIcon("C:/java_workspace2/ExKakaoProject/res/chat.png");
+		
+		ImageIcon chat = new ImageIcon(this.getClass().getResource("/chat.png"));
 		bt_chat = new RoundButton(chat);
 		
-		ImageIcon manager = new ImageIcon("C:/java_workspace2/ExKakaoProject/res/manager.png");
+		
+		ImageIcon manager = new ImageIcon(this.getClass().getResource("/manager.png"));
 		bt_manager = new RoundButton(manager);
 		
-		ImageIcon back_profile = new ImageIcon("C:/java_workspace2/ExKakaoProject/res/back_select.png");
+		
+		ImageIcon back_profile = new ImageIcon(this.getClass().getResource("/back_profile.png"));
 		bt_back_profile = new RoundButton(back_profile);
 		
 		chooser= new JFileChooser("C:/java_workspace2/ExKakaoProject/res");
-		thread = new Thread(this);
-		thread.start();
-		
-		
+	
 		la_chat = new JLabel("채팅하기");
-		la_chat.setForeground(Color.BLACK);
 		la_manager =new JLabel("수정하기");
-		la_manager.setForeground(Color.BLACK);
-		la_profile= new JLabel("dddddd");
-		la_profile.setForeground(Color.BLACK);
 		
+		
+		la_chat.setForeground(Color.BLACK);
+		la_manager.setForeground(Color.BLACK);
 		
 		
 
 		//                            x  y   width  height
-		north_img.setBounds(0, 0, 300, 300);
-		name.setBounds(115, 280, 70, 50);
+		can_north_img.setBounds(0, 0, 300, 300);
+		la_name.setBounds(115, 280, 70, 50);
 		bt_chat.setBounds(65, 340, 50, 50);
 		bt_manager.setBounds(165, 340, 50, 50);
 		la_chat.setBounds(65, 390, 70, 30);
@@ -159,8 +145,8 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		bt_back_profile.setBounds(245, 250, 45, 45);
 				
 		
-		layeredPane.add(north_img, 1);
-		layeredPane.add(name, 2,1);
+		layeredPane.add(can_north_img, 1);
+		layeredPane.add(la_name, 2,1);
 		layeredPane.add(bt_chat, 3,2);
 		layeredPane.add(bt_manager, 4,3);
 		layeredPane.add(la_chat, 4,3);
@@ -168,7 +154,7 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		layeredPane.add(bt_back_profile, 4,3);
 		
 		
-		north_img.addMouseListener(new MouseAdapter() {
+		can_north_img.addMouseListener(new MouseAdapter() {
 			
 			public void mouseClicked(MouseEvent e) {
 				
@@ -180,36 +166,25 @@ public class Real extends JFrame implements ActionListener,Runnable{
 				System.out.println(p.getX()+","+p.getY());
 				
 				if(x>116 && x<172 && y>200&& y<260){
-					System.out.println("이미지클릭");
-					ProfileImage profileImage = new ProfileImage(real);
+					//해당범위를 클릭했을때만 프로필 이미지가 확대되도록 뜸.
+					ProfileImage profileImage = new ProfileImage(profile);
 				}else{
-					System.out.println("노ㅓ작동");
+					
 				}
 			}
 		});
 		
 		
 		bt_manager.addActionListener(this);
-		la_profile.addMouseListener(new MouseAdapter() {
-			
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("클릭");
-				//EditProfile editProfile = new EditProfile(real);
-			
-			}
-		});
 		bt_back_profile.addActionListener(this);
 		
 		
 		add(layeredPane);
 		
-		
-		
 		setBackground(Color.WHITE);
 		setSize(310, 460);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
 		
 	}
 	
@@ -222,25 +197,14 @@ public class Real extends JFrame implements ActionListener,Runnable{
 			int result = chooser.showOpenDialog(this);
 			if(result == JFileChooser.APPROVE_OPTION){
 				File file = chooser.getSelectedFile();
-				url=this.getClass().getResource("/"+file.getName()+""); //프로필사진
-				
-				north_img.repaint();
+				url_profileBackground=this.getClass().getResource("/"+file.getName()+""); //프로필사진
+				can_north_img.repaint();
 			}
 		}
 		
 	}
-	
-	
-	public void run() {
-		while(true){
-			north_img.repaint();
-			south_img.repaint();
-			
-		}
-		
-	}
-	
+
 	public static void main(String[] args) {
-		new Real();
+		new Profile();
 	}
 }
