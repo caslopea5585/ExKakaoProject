@@ -44,7 +44,7 @@ public class Real extends JFrame implements ActionListener,Runnable{
 	ImageIcon chat,manager;
 	RoundButton bt_chat,bt_manager,bt_back_profile;
 	Real real;
-	String status_msg;
+	String status_msg="상태메시지";
 	JFileChooser chooser;
 	Thread thread;
 	
@@ -57,9 +57,9 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		
 		System.out.println("메인"+url3);
 		try {
-			bg_north = ImageIO.read(url);
+		
 			bg_south = ImageIO.read(url2);
-			profile= ImageIO.read(url3);
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -69,7 +69,13 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		north_img = new Canvas(){
 			public void paint(Graphics g) {
 				   
-		       																		//잘라내는 원의 크기를 결정
+				try {
+					bg_north = ImageIO.read(url);
+					profile= ImageIO.read(url3);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}		
+																					//잘라내는 원의 크기를 결정
 		        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(99,181,100,98); 
 		        Area circle = new Area(ellipse1);
 		        
@@ -77,7 +83,7 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		        
 		        g.setFont(new Font("돋움", Font.PLAIN, 25));
 		        g.setColor(Color.BLACK);
-		        status_msg="상태메시지";
+		        
 		        g.drawString(status_msg, 85, 100);						//상태메시지
 		        
 		        
@@ -102,6 +108,12 @@ public class Real extends JFrame implements ActionListener,Runnable{
 				Graphics2D g2 =(Graphics2D) g;
 				System.out.println("dddd");
 			}
+			
+			public void update(Graphics g) {
+				
+				super.update(g);
+			}
+			
 		};
 		south_img = new Canvas(){
 			public void paint(Graphics g) {
@@ -223,7 +235,7 @@ public class Real extends JFrame implements ActionListener,Runnable{
 		while(true){
 			north_img.repaint();
 			south_img.repaint();
-			north_img.update(g);
+			
 		}
 		
 	}

@@ -40,28 +40,31 @@ public class EditProfile extends JDialog implements ActionListener{
 	URL url;
 	Canvas can;
 	JFileChooser chooser;
+
 	
 	public EditProfile(Real real) {
 		this.real = real;
+		this.url = real.url3;
+
+		
 		p_north = new JPanel();
 		p_center = new JPanel();
 		p_south = new JPanel();
 		
-		this.url = real.url3;
-		try {
-			profile = ImageIO.read(url);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 		
-		icon = new ImageIcon(url);
 		can = new Canvas(){
 			public void paint(Graphics g) {
 		        Ellipse2D.Double ellipse1 = new Ellipse2D.Double(99,181,100,98); 
 		        Area circle = new Area(ellipse1);
-		        
+				try {
+					profile = ImageIO.read(real.url3);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		        g.drawImage(profile, 0, 0, 100,100,this);  //백그라운드이미지
-		        
+		        real.north_img.repaint();
 		        g.setFont(new Font("돋움", Font.BOLD, 15));
 		        g.setColor(Color.BLACK);
 		       
@@ -93,7 +96,7 @@ public class EditProfile extends JDialog implements ActionListener{
 		name.setPreferredSize(new Dimension(280, 30));
 		status_msg.setPreferredSize(new Dimension(280, 50));
 		
-		p_north.setSize(new Dimension(300, 100));
+		can.setSize(new Dimension(300, 100));
 		p_center.setSize(new Dimension(300, 100));
 		p_south.setSize(new Dimension(300, 50));
 		
@@ -110,8 +113,7 @@ public class EditProfile extends JDialog implements ActionListener{
 					File file = chooser.getSelectedFile();
 					url=this.getClass().getResource("/"+file.getName()+""); //프로필사진
 					real.url3=this.getClass().getResource("/"+file.getName()+""); //프로필사진
-					System.out.println(file.getName());
-					System.out.println(url);
+					real.north_img.repaint();
 					can.repaint();
 					can.imageUpdate(profile, can.PROPERTIES, 0, 0, 100, 100);
 				}
@@ -120,13 +122,15 @@ public class EditProfile extends JDialog implements ActionListener{
 			}
 			
 		});
-		
 		bt_cancle.addActionListener(this);
 		bt_ok.addActionListener(this);
+
 		
+			
 		p_north.setBackground(Color.WHITE);
 		p_center.setBackground(Color.WHITE);
 		p_south.setBackground(Color.WHITE);
+
 		
 		setVisible(true);
 		setLocationRelativeTo(real);
@@ -138,6 +142,7 @@ public class EditProfile extends JDialog implements ActionListener{
 		System.out.println("찍니");
 		real.name.setText(name.getText());
 		real.status_msg=status_msg.getText();
+		real.north_img.repaint();
 		
 	}
 	
@@ -154,5 +159,7 @@ public class EditProfile extends JDialog implements ActionListener{
 		dispose();
 		
 	}
+	
+
 	
 }
